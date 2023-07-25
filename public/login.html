@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Přihlášení</title>
+    <link rel="stylesheet" href="register.css">
 </head>
 <body>
-    login
-</body>
+    <main class="container">
+      <h1>Přihlášení</h1>
+      <form method="POST" action="/login">
+        <label for="username">Přezdívka:</label>
+        <input type="text" id="username" name="username" required>
+  
+        <label for="password">Heslo:</label>
+        <input type="password" id="password" name="password" required>
+  
+        <button type="submit">Přihlásit</button>
+      </form>
+    </main>
+  </body>
 </html>
