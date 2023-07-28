@@ -20,3 +20,17 @@ server na poznamky. Prvni dva commity nepočítám, Commit 1 je třetí.
 # Commit 4
 1. Teď se budeme soustředit na přihlášení. V Api endpointu pro login (/login) zkontrolujeme, jestli jsme přijali jméno a heslo, načteme JSON soubor stejně jako minule a podíváme se, jestli uživatel existuje. Pokud ne tak vrátíme zpátky, pokud ano, porovnáme hash hesla v json souboru s heslem co jsme dostali. 
 1. Pokud to sedí, pomocí knihovny express-session přiřazuju cookies. Konfigiruju přes app.use (podívej se na komentáře v kódu), je to nahoře. Setnu session cookie tak, aby objekt měl property authenticated, a setnu to true. ```req.session.authenticated = true```. Potom v kódu, kterej odpovídá GET requestu na /, pokud je to authenticated true tak mu tu stránku pošlu, pokud ne tak ho přesměruju na login.
+
+# Commit 5
+1. Teď zprovozníme vkládání poznámek. Vytvořím formulář v index.html a ve složce static tomu css, které potom importuju. Formu dám metodu POST a action /createNote. Inputům dám nějaká jména, která potom použiju, já dal ```noteTitle, noteContent, importantNote```. V POST API endpointu /createNote na serveru, Parsnu to z body, přečtu soubor ```poznamky.json``` (tvar zhruba takový: 
+{
+    "ASD":[
+        {
+            "date":1690548812907,
+            "header":"nadpis",
+            "content":"obsah",
+            "isImportant":true
+        }
+    ]
+})
+1. u POST endpointu /createNote: zkontroluju přítomnost obsahu a nadpisu, zkontroluju, jestli je uživatel přihlášenej (pokud ne tak redirect na login), načtu soubor poznamky.json, pokud tam neexistuje array pro konkrétního uživatele (příklad uživatele ASD nahoře), tak ho vytvořím. S klíčem uživatelského jména přidám objekt s poznámkou do arraye uživatele. header a content píšu rovnou, isImportant je podle checkboxu, date je jen vygenerovanej timestamp. Potom toto zapíšu do json souboru (zatím to mám jen v proměnné). Pokud je všechno v pořádku, redirectnu na / (tedy reload stránky)  a pošlu status kód 200.

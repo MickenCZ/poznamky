@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    asd
-</body>
+    <div class="container">
+      <h1>Vložení poznámky</h1>
+      <form method="POST" action="/createNote">
+        <div class="form-group">
+          <label for="noteTitle">Nadpis:</label>
+          <input type="text" id="noteTitle" name="noteTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="noteContent">Obsah:</label>
+          <textarea id="noteContent" name="noteContent" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="importantNote">Důležité:</label>
+          <input type="checkbox" id="importantNote" name="importantNote">
+        </div>
+        <button type="submit">Uložit poznámku</button>
+      </form>
+    </div>
+  </body>
 </html>

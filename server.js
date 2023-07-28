@@ -101,6 +101,41 @@ app.post('/register', (req, res) => {
   });
 
 
+
+
+
+  app.post('/createNote', (req, res) => {
+    const { noteTitle, noteContent, importantNote } = req.body;
+    if (!noteContent || !noteTitle) {
+      return res.status(400).send("pro vložení poznámky musíš mít obsah i nadpis")
+    }
+    if (!req.session.user) {
+      return res.status(403).redirect("/login")
+    }
+    else {
+      const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
+      const poznamkyObject = JSON.parse(poznamkyString) //převedení stringu JSONU na JS object
+
+      if (!poznamkyObject[req.session.user.username]) {//pokud array poznámek pro uživatele neexistuje, vytvoříme ho
+        poznamkyObject[req.session.user.username] = []
+      }
+
+      poznamkyObject[req.session.user.username].push({ //vložíme do arraye poznámek poznámku
+        header:noteTitle,
+        content:noteContent,
+        isImportant: importantNote == "on" ? true : false,
+        date: Date.now()
+      })
+
+
+      fs.writeFileSync("./poznamky.json", JSON.stringify(poznamkyObject)) //převede objekt na string a hodí ho do poznamky.json
+      return res.status(200).redirect("/")
+    }
+  })
+
+
+
+  
 app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`)
 })
