@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" href="index.css">
+    <title>Poznámky</title>
 </head>
 <body>
     <div class="container">
@@ -27,17 +27,25 @@
     </div>
     
     <div class="container"> 
-        <% for (let poznamka of poznamky) { %>
+        <% if (poznamky) {for (let poznamka of poznamky) { %>
         <div class="todo">
             <h2 class="title"><%= poznamka.header %></h2>
             <p class="content"><%= poznamka.content %></p>
             <p class="date">Čas vytvoření: <%= new Date(poznamka.date).toLocaleString() %></p>
-            <button class="remove-button">Remove</button>
+            <button class="remove-button" onclick=" fetch('/deleteNote', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({date:<%= poznamka.date%>}),
+            }); window.location.href = '/'">Remove</button>
             <% if (poznamka.isImportant) { %>
-                <span class="important-marker">Important!</span>
+                <span class="important-marker">Důležité!</span>
               <% }%>
         </div>
-        <% } %>
+        <% }} %>
     </div>
+    <script>
+    </script>
   </body>
 </html>

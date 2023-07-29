@@ -3,8 +3,10 @@ const path = require('path')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
 const session = require('express-session') //cookies na přihlášení
+const bodyParser = require('body-parser');
 
 const app = express()
+app.use(bodyParser.json()) //parsuj json data z fetch
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'static'))) //ber soubory ze složky static
 app.use(express.urlencoded({ extended: true })); //parsuj json data z formulářů
@@ -140,7 +142,30 @@ app.post('/register', (req, res) => {
 
 
 
+
+ app.post('/deleteNote', (req, res) => {
+    const { date } = req.body;
+    if (!date) {
+      return res.status(400).send("pro vložení poznámky musíš mít obsah i nadpis")
+    }
+
+    if (!req.session.user) {
+      return res.status(403).redirect("/login")
+    }
+    
+      const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
+      const poznamkyObject = JSON.parse(poznamkyString) //převedení stringu JSONU na JS object
+      poznamkyObject[req.session.user.username] = poznamkyObject[req.session.user.username].filter(poznamka => poznamka.date !== date) //vymaže to poznámku z arraye tím, že filtr ponechá jen datumy, která se liší
+      fs.writeFileSync("./poznamky.json", JSON.stringify(poznamkyObject))
+      return res.status(200).redirect("/") //tohle ve skutečnosti nic neudělá, redirect musí být clientside
+    
+  })
   
+
+
+
+
+
 app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`)
 })

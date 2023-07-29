@@ -39,3 +39,16 @@ server na poznamky. Prvni dva commity nepočítám, Commit 1 je třetí.
 1. Teď začneme řešit zobrazování dat o poznámkách. Nainstalovaj jsem ejs a vytvořil složku views a v ní index.ejs Jedná se standardní templatování. Zkopíruju prozatím obsah index.html do index.ejs, a index.html můžu smazat. Nastavil jsem view engine jako ejs ```app.set("view engine", "ejs")``` a tím jsem zapnul používání těchto souborů. V endpointu na GET request na / jsem to nastavil, aby to renderovalo ten ejs soubor a ne html ```res.render("index", data)```. Pomocí toho parametru data můžu dávat serverová data přímo do toho souboru a dynamicky ho generovat, já to konkrétně použiju na zobrazení poznámek. Pokud to děláš v .NET, použij prostě ten template engine, co je ti v tom jazyce nejbližší.
 1. Až mi přijde GET request na / a zjistím, že je uživatel přihlášen tak: přečtu poznámky z JSON souboru, konverutju na objekt, podle klíče vezmu jen array poznámek náležící jednomu uživateli, (jeho jméno zjistím podle autentikace, v JS to je z ```req.session```, u mě konkrétně ```req.session.user.username```). Potom do templatu pošlu tento array jako data.
 1. Template přizpůsobím těm datům, přidám css a html tak aby to nějak vypadalo. Koukni se na tu finální podobu ```index.ejs```. Stejně jako třeba v PHP střídám psaní kódu a markupu.
+
+# Commit 7
+1. Teď vyřešíme mazání jednotlivých poznámek. I když by bylo dobré používat unikátní ID jako v databázi, zde v pohodě stačí použít na identifikaci poznámek autora a čas. Ve stejnou milisekundu dvakrát nic nevytvořím, takže pokud smažu všechny timestampy uživatele "Já" s časem 1690548812907, mělo by to smazat jen jeden. Pro smazání vytvořím API POST endpoint deletePoznamka a callovat ho budu přes onClick funkci na tlačítku pro vymazání poznámky, na které dám fetch a timestamp toho postu do body.
+1. Na to, abychom mohli parsovat JSON poslaný z funkce fetch, nainstalujeme body-parser a setupneme middleware app.use. Fetch bude vypadat nějak takhle, akorát dynamicky pošlu date: 
+
+fetch('/deleteNote', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({date:123}),
+            })
+1. V API endpointu POST pro /deleteNote zkontrolujeme jestli nám bylo posláno datum, (unix timestamp v ms), jestli je uživatel přihlášen, a pokud ano oboje, tak přečtu poznamky, převedu na objekt, vyberu jen poznamky přihlášeného uživatele, podle timestampu (date) pomocí filtru vymažu poznámku s objektu, ten objekt zapíšu do poznamky.json a hotovo. mimo fetch musí být po něm v Ejs/html ještě reload, protože forcenout to po fetchi nemůžu. Tímto už máme hotové mazání poznámek
