@@ -64,3 +64,69 @@ body {
   button:hover {
     background-color: #f26763;
   }
+
+
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .todo {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .title {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+  }
+  
+  .content {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .date {
+    font-size: 14px;
+    color: #999;
+    margin: 10px 0;
+  }
+  
+  .important-marker {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #ff8080;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+  .remove-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #ff5c5c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .remove-button:hover {
+    background-color: #ff3b3b;
+  }

@@ -25,5 +25,19 @@
         <button type="submit">Uložit poznámku</button>
       </form>
     </div>
+    
+    <div class="container"> 
+        <% for (let poznamka of poznamky) { %>
+        <div class="todo">
+            <h2 class="title"><%= poznamka.header %></h2>
+            <p class="content"><%= poznamka.content %></p>
+            <p class="date">Čas vytvoření: <%= new Date(poznamka.date).toLocaleString() %></p>
+            <button class="remove-button">Remove</button>
+            <% if (poznamka.isImportant) { %>
+                <span class="important-marker">Important!</span>
+              <% }%>
+        </div>
+        <% } %>
+    </div>
   </body>
 </html>

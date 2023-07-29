@@ -5,6 +5,7 @@ const fs = require('fs')
 const session = require('express-session') //cookies na přihlášení
 
 const app = express()
+app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, 'static'))) //ber soubory ze složky static
 app.use(express.urlencoded({ extended: true })); //parsuj json data z formulářů
 app.use(
@@ -18,13 +19,17 @@ app.use(
   })
 );
 
-//po get requestu na / pošli zpátky index.html
+//po get requestu na / pošli zpátky index.ejs
 app.get('/', (req, res) => {
   if (!req.session.authenticated) {
     res.redirect("/login")
   }
   else {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+    const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
+    const poznamkyObject = JSON.parse(poznamkyString) //převedení stringu JSONU na JS object
+    const poznamky = poznamkyObject[req.session.user.username]
+    const data = {poznamky:poznamky}
+    res.render("index", data)
   }
 })
 
