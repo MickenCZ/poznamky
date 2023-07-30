@@ -7,6 +7,9 @@
     <title>Poznámky</title>
 </head>
 <body>
+  <button class="remove-button" onclick=" fetch('/deleteUser', {
+    method: 'POST',
+  }); window.location.href = '/'">Odstranit účet</button>
     <div class="container">
       <h1>Vložení poznámky</h1>
       <form method="POST" action="/createNote">
@@ -38,7 +41,7 @@
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({date:<%= poznamka.date%>}),
-            }); window.location.href = '/'">Remove</button>
+            }); window.location.href = '/'">Odstranit</button>
             <% if (poznamka.isImportant) { %>
                 <span class="important-marker">Důležité!</span>
               <% }%>

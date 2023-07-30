@@ -165,6 +165,24 @@ app.post('/register', (req, res) => {
 
 
 
+  app.post('/deleteUser', (req, res) => {
+    if (!req.session.user) {
+      return res.status(403).redirect("/login")
+    }
+    const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
+    const poznamkyObject = JSON.parse(poznamkyString) //převedení stringu JSONU na JS object
+    const usersString = fs.readFileSync('./users.json',{ encoding: 'utf8'}) //přečtení users.json
+    const usersObject = JSON.parse(usersString) //převedení stringu JSONU na JS object
+    delete poznamkyObject[req.session.user.username]
+    delete usersObject[req.session.user.username]
+    fs.writeFileSync("./users.json", JSON.stringify(usersObject)) //převede objekt na string a hodí ho do users.json
+    fs.writeFileSync("./poznamky.json", JSON.stringify(poznamkyObject)) //převede objekt na string a hodí ho do poznamky.json
+    req.session.destroy();
+    return res.status(200).send("Úspěšně jsme smazali váš účet")
+  })
+
+
+
 
 app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`)

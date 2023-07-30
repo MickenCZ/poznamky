@@ -52,3 +52,7 @@ fetch('/deleteNote', {
               body: JSON.stringify({date:123}),
             })
 1. V API endpointu POST pro /deleteNote zkontrolujeme jestli nám bylo posláno datum, (unix timestamp v ms), jestli je uživatel přihlášen, a pokud ano oboje, tak přečtu poznamky, převedu na objekt, vyberu jen poznamky přihlášeného uživatele, podle timestampu (date) pomocí filtru vymažu poznámku s objektu, ten objekt zapíšu do poznamky.json a hotovo. mimo fetch musí být po něm v Ejs/html ještě reload, protože forcenout to po fetchi nemůžu. Tímto už máme hotové mazání poznámek
+
+# Commit 8
+1. Teď implementujeme mazání účtu. V ```index.ejs``` vytvoříme tlačítko, které pošle přes fetch request na náš server, já jsem zvolil POST /deleteUser, ale klidně by šla asi použít i DELETE metoda. Stejně jako před tím po fetchi refreshnu stránku přes javascript. 
+1. Na endpointu POST /deleteUser udělám toto: přečtu users.json a poznamky.json a oboje parsnu na objekt. Z obou odstraním klíč odpovídající jménu uživatele. Oba soubory zapíšu zpět do souborového systému. Odhlásím uživatele ze session. Pošlu zpět status kód 200 a hotovo. Teď máme hotovou bezpečnou aplikaci s loginem, která umí ukládat poznámky.
