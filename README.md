@@ -56,3 +56,6 @@ fetch('/deleteNote', {
 # Commit 8
 1. Teď implementujeme mazání účtu. V ```index.ejs``` vytvoříme tlačítko, které pošle přes fetch request na náš server, já jsem zvolil POST /deleteUser, ale klidně by šla asi použít i DELETE metoda. Stejně jako před tím po fetchi refreshnu stránku přes javascript. 
 1. Na endpointu POST /deleteUser udělám toto: přečtu users.json a poznamky.json a oboje parsnu na objekt. Z obou odstraním klíč odpovídající jménu uživatele. Oba soubory zapíšu zpět do souborového systému. Odhlásím uživatele ze session. Pošlu zpět status kód 200 a hotovo. Teď máme hotovou bezpečnou aplikaci s loginem, která umí ukládat poznámky.
+
+# Commit 9 - Dokumentace
+Jak spustit aplikaci? Nainstaluj node.js a ve složce s tímto projektem napiš: ```npm install``` a až se nainstalují dependence tak ```node server.js```. Tímto se spustí server na ```localhost:3000```. Nejdřív doporučuji vytvořit účet na ```localhost:3000/register```. Poté dostanete přístup ke zbytku aplikace. Pokud chcete autorefreshovat server při vývoji, stačí přidat flag ```node --watch server.js```. 
