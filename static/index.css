@@ -130,3 +130,8 @@ body {
   .remove-button:hover {
     background-color: #ff3b3b;
   }
+
+  a {
+    color:white;
+    text-decoration: none;
+  }

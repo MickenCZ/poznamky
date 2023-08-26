@@ -7,9 +7,7 @@
     <title>Poznámky</title>
 </head>
 <body>
-  <button class="remove-button" onclick=" fetch('/deleteUser', {
-    method: 'POST',
-  }); window.location.href = '/'">Odstranit účet</button>
+  <button class="remove-button"><a href="/delete">Odstranit účet</a></button>
     <div class="container">
       <h1>Vložení poznámky</h1>
       <form method="POST" action="/createNote">

@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  h1 {
+    color: #ff6b6b;
+    font-size: 40px;
+  }
+
+  button {
+    padding: 10px;
+    background-color: #ff9696;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  button:hover {
+    background-color: #ff5252;
+  }
+
+  #buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top:100px;
+  }
+
+  #buttons button {
+    font-size: 30px;
+    padding:20px;
+  }
+
+  a {
+    text-decoration: none;
+    color:white;
+    /* vypnutí podtržení u linků*/
+  }

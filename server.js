@@ -24,7 +24,7 @@ app.use(
 //po get requestu na / pošli zpátky index.ejs
 app.get('/', (req, res) => {
   if (!req.session.authenticated) {
-    res.redirect("/login")
+    res.redirect("/home")
   }
   else {
     const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
@@ -43,7 +43,18 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'))
 });
 
+app.get('/home', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'home.html'))
+});
 
+app.get('/delete', (req, res) => {
+  if (!req.session.authenticated) {
+    res.redirect("/home")
+  }
+  else {
+    res.sendFile(path.join(__dirname, 'public', 'delete.html'))
+  }
+});
 
 
 
@@ -169,16 +180,24 @@ app.post('/register', (req, res) => {
     if (!req.session.user) {
       return res.status(403).redirect("/login")
     }
+    const { password } = req.body;
+
     const poznamkyString = fs.readFileSync('./poznamky.json',{ encoding: 'utf8'}) //přečtení poznamky.json
     const poznamkyObject = JSON.parse(poznamkyString) //převedení stringu JSONU na JS object
     const usersString = fs.readFileSync('./users.json',{ encoding: 'utf8'}) //přečtení users.json
     const usersObject = JSON.parse(usersString) //převedení stringu JSONU na JS object
-    delete poznamkyObject[req.session.user.username]
-    delete usersObject[req.session.user.username]
-    fs.writeFileSync("./users.json", JSON.stringify(usersObject)) //převede objekt na string a hodí ho do users.json
-    fs.writeFileSync("./poznamky.json", JSON.stringify(poznamkyObject)) //převede objekt na string a hodí ho do poznamky.json
-    req.session.destroy();
-    return res.status(200).send("Úspěšně jsme smazali váš účet")
+
+    if (bcrypt.compareSync(password, usersObject[req.session.user.username].passHash)) {
+      delete poznamkyObject[req.session.user.username]
+      delete usersObject[req.session.user.username]
+      fs.writeFileSync("./users.json", JSON.stringify(usersObject)) //převede objekt na string a hodí ho do users.json
+      fs.writeFileSync("./poznamky.json", JSON.stringify(poznamkyObject)) //převede objekt na string a hodí ho do poznamky.json
+      req.session.destroy();
+      return res.status(200).send("Úspěšně jsme smazali váš účet")
+    }
+    else {
+      return res.status(403).send("Zadali jste nesprávné heslo.")
+    }
   })
 
 
